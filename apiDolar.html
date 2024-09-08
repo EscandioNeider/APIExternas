@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="refresh" content="10"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>💵 Valores do Dólar</title>
+</head>
+<body class="background">
+    <a href="index.html" class="voltar">
+        <img src="img/imgVoltar.png" alt="Voltar">
+    </a>
+    <div class="div">
+
+    <h1  class="titulo">Quanto está valendo o dólar agora?</h1>
+    <br><br>
+    <br><br>
+    <label class="subtitulo"> Valor do Dólar </label>
+    <p class="subtitulo" id="valorDoDolar"></p>
+    <br><br>
+    <label class="subtitulo"> Maior Valor Agora </label>
+    <p class="subtitulo" id="valorMaiorDolar"></p>
+    <br><br>
+    <label class="subtitulo"> Menor Valor Agora </label>
+    <p class="subtitulo" id="valorMenorDoDolar"></p>
+ </div>
+ 
+ <style>
+    body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .background {
+            background-image: url('media/backDolar.gif'); 
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            width: 100%;
+            height: 100vh;}
+
+        .div {
+            width: 35%;
+            text-align: center;
+            color: aliceblue;
+            background-color: #5a7e464d;
+            box-shadow: 0px 4px 8px rgba(55, 97, 28, 0.877);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .titulo{
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 190%;
+            color: #2c441d;
+        }
+
+        .subtitulo{
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 130%;
+            color: #2c441d;
+        }
+
+        img {
+            width: 35%;
+            height: 35%;
+            margin-top: 0%;
+        }
+        .voltar {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 10;
+        }
+ </style>
+    <script>
+        fetch(`https://economia.awesomeapi.com.br/last/USD-BRL`).then(resposta => {
+    return resposta.json()
+}).then(economia => {
+    console.log(economia)
+
+    document.getElementById('valorDoDolar').innerHTML= economia.USDBRL.bid
+    document.getElementById('valorMaiorDolar').innerHTML= economia.USDBRL.high
+    document.getElementById('valorMenorDoDolar').innerHTML= economia.USDBRL.low
+}) 
+    </script>
+</body>
+</html>

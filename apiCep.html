@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌍 Consulte seu CEP</title>
+</head>
+<body>
+    <a href="index.html" class="voltar">
+        <img src="img/imgVoltar.png" alt="Voltar">
+    </a>
+    <form>
+        <div class="div">
+            <h1 class="titulo">Consulte o seu CEP!</h1>
+            <p>Digite seu CEP e clique <strong>fora do campo</strong> para receber todas as informações que precisa!</p>
+            <fieldset>
+                <legend class="titulo2">Endereço:</legend>
+                <label class="subtitulo" for="cep">CEP</label>
+                <input class="valor" type="text" id="cep" autocomplete="off" placeholder="Digite o CEP">
+                <br><br>
+                <label class="subtitulo" for="rua">Rua</label>
+                <input class="valor" type="text" id="rua" readonly>
+                <br><br>
+                <label class="subtitulo" for="numero">Número</label>
+                <input class="valor" type="text" id="numero" placeholder="Digite o número">
+                <br><br>
+                <label class="subtitulo" for="bairro">Bairro</label>
+                <input class="valor" type="text" id="bairro" readonly>
+                <br><br>
+                <label class="subtitulo" for="cidade">Cidade</label>
+                <input class="valor" type="text" id="cidade" readonly>
+                <br><br>
+                <label class="subtitulo" for="estado">Estado</label>
+                <input class="valor" type="text" id="estado" readonly>
+                <br>
+            </fieldset>
+        </div>
+    </form>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url(media/backMapa.gif);
+            background-size: cover; 
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        .div { 
+            width: 75%;
+            text-align: center;
+            color: aliceblue;
+            background-color: #18243b28;
+            box-shadow: 0px 4px 8px #c6d8f8de;
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+        }
+        .titulo, .titulo2 {
+            color: aliceblue;
+        }
+        @keyframes borderAnimation {
+            0% { border-color: #ff6601; }
+            25% { border-color: #ffc400; }
+            50% { border-color: #b3ff00; }
+            75% { border-color: #ffc400; }
+            100% { border-color: #ff6601; }
+        }
+        fieldset {
+            border: 2px solid #ff6601;
+            border-radius: 10px;
+            padding: 20px;
+            width: 55%;
+            margin: 0 auto;
+            animation: borderAnimation 5s ease infinite;
+        }
+        .subtitulo {
+            display: block;
+            margin-bottom: 5px;
+        }
+        img {
+            width: 35%;
+            height: 35%;
+            margin-top: 0%;
+        }
+        .voltar {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 10;
+        }
+    </style>
+    <script>
+        const preencherFormulario = (endereco) => {
+            document.getElementById("rua").value = endereco.logradouro || "";
+            document.getElementById("bairro").value = endereco.bairro || ""; 
+            document.getElementById("cidade").value = endereco.localidade || "";
+            document.getElementById("estado").value = endereco.uf || "";
+        }
+
+        const cepValido = (cep) => {
+            return cep.length === 8 && /^[0-9]+$/.test(cep);  // Verifica se são 8 números
+        }
+
+        const PesquisaCep = async () => {
+            const cep = document.getElementById("cep").value.replace("-", "");  
+            const url = `https://viacep.com.br/ws/${cep}/json/`;  
+            if (cepValido(cep)) {
+                const dados = await fetch(url);
+                const endereco = await dados.json();
+                if (endereco.erro) {
+                    alert("CEP inválido!");  
+                    return;
+                }
+                preencherFormulario(endereco);
+            } else {
+                alert("Formato de CEP inválido!");
+            }
+        }
+
+        document.getElementById("cep").addEventListener("focusout", PesquisaCep); 
+    </script>
+</body>
+</html>
